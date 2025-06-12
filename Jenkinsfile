@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/snehalatabarenka/jenkins-project.git'
+                git branch: 'main', url: 'https://github.com/snehalatabarenkal/jenkins-project.git'
             }
         }
 
@@ -20,7 +20,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
+                withSonarQubeEnv('sonar') {
                     sh '''${SCANNER_HOME}/bin/sonar-scanner \
                     -Dsonar.projectKey=flaskdemo \
                     -Dsonar.projectName=flaskdemo \
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker') {
-                        sh 'docker build -t snehalatabarenka/python-app:latest .'
+                        sh 'docker build -t snehalatabarenkal/python-app:latest .'
                     }
                 }
             }
@@ -41,7 +41,7 @@ pipeline {
 
         stage('Scan Docker Image by Trivy') {
             steps {
-                sh 'trivy image --format table -o image-report.html snehalatabarenka/python-app:latest'
+                sh 'trivy image --format table -o image-report.html snehalatabarenkal/python-app:latest'
             }
         }
 
@@ -49,7 +49,7 @@ pipeline {
             steps {
                 script {
                     withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker') {
-                        sh 'docker push snehalatabarenka/python-app:latest'
+                        sh 'docker push snehalatabarenkal/python-app:latest'
                     }
                 }
             }
@@ -62,3 +62,4 @@ pipeline {
         }
     }
 }
+      
